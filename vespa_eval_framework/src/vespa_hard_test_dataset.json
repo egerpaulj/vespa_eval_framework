@@ -1,0 +1,918 @@
+{
+  "documents": [
+    {
+      "id": "doc-001",
+      "title": "Introduction to Vespa search engine",
+      "body": "Vespa is a scalable search engine for structured and unstructured content. It supports BM25, neural ranking, and hybrid search workflows.",
+      "summary_text": "Overview of Vespa search and ranking capabilities.",
+      "semantic_text": "What is Vespa and how does it combine lexical search with neural ranking?",
+      "category": "Search Platform"
+    },
+    {
+      "id": "doc-002",
+      "title": "How to configure BM25 ranking in Vespa",
+      "body": "BM25 ranking in Vespa is configured through schema field indexing and rank profiles. Use tokenization, stopwords, and field weights to tune retrieval.",
+      "summary_text": "BM25 setup and tuning guidance for Vespa fields.",
+      "semantic_text": "How do I set up BM25 scoring in a Vespa document schema?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-003",
+      "title": "Dense vector retrieval with document embeddings",
+      "body": "Embedding-based retrieval uses vector similarity for semantic matching. Documents store a dense tensor embedding and queries use neural vector encodings.",
+      "summary_text": "Dense retrieval uses embeddings for semantic search.",
+      "semantic_text": "How can I use document embeddings for semantic retrieval in Vespa?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-004",
+      "title": "Hybrid search strategy combining BM25 and embeddings",
+      "body": "Hybrid search blends lexical BM25 signals with embedding similarity to handle both exact keyword matches and semantic meaning.",
+      "summary_text": "Hybrid search mixes sparse and dense retrieval scores.",
+      "semantic_text": "When should I combine BM25 and neural embeddings in search ranking?",
+      "category": "Hybrid Search"
+    },
+    {
+      "id": "doc-005",
+      "title": "Best practices for embedding normalization",
+      "body": "Normalize embedding vectors before indexing and querying to ensure stable cosine similarity or angular distance comparisons.",
+      "summary_text": "Recommendations for normalization of embedding vectors.",
+      "semantic_text": "Why should embeddings be normalized before similarity search?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-006",
+      "title": "How to evaluate search relevance with MRR and recall",
+      "body": "Evaluation metrics like MRR, MAP, precision@k, and recall@k help compare search strategy quality across query types.",
+      "summary_text": "Search relevance evaluation metrics for ranking comparison.",
+      "semantic_text": "What metrics should I use to evaluate retrieval performance?",
+      "category": "Evaluation"
+    },
+    {
+      "id": "doc-007",
+      "title": "Understanding cosine similarity and angular distance",
+      "body": "Cosine similarity measures angle between vectors while angular distance is a normalized form. Both are common in embedding similarity search.",
+      "summary_text": "Cosine and angular distance for vector search.",
+      "semantic_text": "What is the difference between cosine similarity and angular distance?",
+      "category": "Math"
+    },
+    {
+      "id": "doc-008",
+      "title": "Question answering systems and passage retrieval",
+      "body": "Question answering pipelines use passage retrieval to find candidate documents, then apply a reader model to extract the answer.",
+      "summary_text": "Passage retrieval for question answering systems.",
+      "semantic_text": "How do question answering systems retrieve the best passages?",
+      "category": "QA"
+    },
+    {
+      "id": "doc-009",
+      "title": "Using fieldsets for text and semantic data in Vespa",
+      "body": "Fieldsets group fields for search and ranking. Use a semantic fieldset for embeddings and a lexical fieldset for BM25 text search.",
+      "summary_text": "Fieldset design for lexical and semantic search in Vespa.",
+      "semantic_text": "How do I group search fields in Vespa for hybrid ranking?",
+      "category": "Schema"
+    },
+    {
+      "id": "doc-010",
+      "title": "How to build a FAQ ranking dataset",
+      "body": "A FAQ ranking dataset contains questions, answers, and relevance labels for query-document matching evaluation.",
+      "summary_text": "Design principles for a FAQ retrieval dataset.",
+      "semantic_text": "What are the components of a good FAQ search dataset?",
+      "category": "Datasets"
+    },
+    {
+      "id": "doc-011",
+      "title": "Handling phrase queries and exact match search",
+      "body": "Phrase queries require careful tokenization and indexing. Exact phrase matching can be boosted with specialized fields or query-time filters.",
+      "summary_text": "Phrase query support and exact matching strategies.",
+      "semantic_text": "How do I support exact phrase queries in my search schema?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-012",
+      "title": "Using title and body embeddings separately in Vespa",
+      "body": "Separate embeddings for title and body allow fine-grained semantic ranking and different weighting for short versus long text.",
+      "summary_text": "Multi-vector embedding use cases for title and body fields.",
+      "semantic_text": "Why would I keep title and body embeddings separate for ranking?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-013",
+      "title": "Combining lexical and semantic search across product catalogs",
+      "body": "Product search benefits from combining keyword matching on product names with vector similarity on descriptions and features.",
+      "summary_text": "Hybrid product search using BM25 and embeddings.",
+      "semantic_text": "How can I search a product catalog with both keywords and semantic similarity?",
+      "category": "E-commerce"
+    },
+    {
+      "id": "doc-014",
+      "title": "How embeddings improve semantic retrieval",
+      "body": "Embeddings capture concept similarity beyond exact wording, enabling semantic retrieval for paraphrases and question/answer matching.",
+      "summary_text": "Advantages of using embeddings for semantic search.",
+      "semantic_text": "Why are embeddings useful for semantic search queries?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-015",
+      "title": "Symptoms of high blood pressure and medical advice",
+      "body": "High blood pressure can present with headaches, dizziness, and chest discomfort. Monitoring lifestyle and medication are common recommendations.",
+      "summary_text": "Common symptoms and guidance for high blood pressure.",
+      "semantic_text": "What are the symptoms of high blood pressure?",
+      "category": "Health"
+    },
+    {
+      "id": "doc-016",
+      "title": "How to bake sourdough bread and maintain a starter",
+      "body": "Sourdough bread requires a healthy starter, long fermentation, and careful hydration control to produce a sour-yet-soft crumb.",
+      "summary_text": "Practical sourdough baking and starter care tips.",
+      "semantic_text": "How do I bake sourdough bread from a starter?",
+      "category": "Cooking"
+    },
+    {
+      "id": "doc-017",
+      "title": "BM25 ranking for exact phrase matching",
+      "body": "Exact phrase matching in Vespa can be improved by using a dedicated phrase field and BM25 weights. This is distinct from semantic retrieval.",
+      "summary_text": "Phrase matching and BM25 tuning.",
+      "semantic_text": "How can I rank exact phrase queries well with BM25?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-018",
+      "title": "Neural rankers and hybrid retrieval in Vespa",
+      "body": "Vespa supports neural rankers for reranking candidate sets after candidate generation with BM25 or vector search. This improves precision on hard queries.",
+      "summary_text": "Hybrid retrieval and reranking concepts.",
+      "semantic_text": "What is the role of reranking after initial retrieval?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-019",
+      "title": "Embedding similarity for paraphrase retrieval",
+      "body": "Paraphrase retrieval uses embedding similarity to match semantically equivalent questions even when the surface tokens differ significantly.",
+      "summary_text": "Semantic retrieval for paraphrases.",
+      "semantic_text": "Why is embedding similarity useful for paraphrase matching?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-020",
+      "title": "Ranking evaluation using graded relevance",
+      "body": "Modern search evaluation uses graded relevance labels so that highly relevant documents are rewarded more than merely relevant ones.",
+      "summary_text": "Graded relevance for ranking evaluation.",
+      "semantic_text": "How should I score relevant documents in ranking experiments?",
+      "category": "Evaluation"
+    },
+    {
+      "id": "doc-021",
+      "title": "Medical symptoms and blood pressure guidance",
+      "body": "High blood pressure symptoms include headaches, dizziness, and chest discomfort. Medical advice should be tailored and verified.",
+      "summary_text": "Medical guidance for hypertension symptoms.",
+      "semantic_text": "What symptoms are associated with hypertension?",
+      "category": "Health"
+    },
+    {
+      "id": "doc-022",
+      "title": "Baking sourdough with a maintained starter",
+      "body": "A healthy starter and careful feeding schedule are essential for sourdough bread. This is a practical cooking and fermentation guide.",
+      "summary_text": "Starter care and sourdough baking steps.",
+      "semantic_text": "How do I care for a sourdough starter before baking?",
+      "category": "Cooking"
+    },
+    {
+      "id": "doc-023",
+      "title": "Product catalog search with lexical and semantic cues",
+      "body": "Product catalogs often need both keyword matching and semantic similarity to retrieve the right item. These cues are complementary.",
+      "summary_text": "Hybrid shopping search.",
+      "semantic_text": "How can a product catalog support both semantic and lexical search?",
+      "category": "E-commerce"
+    },
+    {
+      "id": "doc-024",
+      "title": "FAQ dataset design for search evaluation",
+      "body": "FAQ datasets include questions, answers, and labels that show whether a returned page is useful for the user’s intent.",
+      "summary_text": "FAQ ranking dataset design best practices.",
+      "semantic_text": "What design choices make an FAQ dataset useful for evaluation?",
+      "category": "Datasets"
+    },
+    {
+      "id": "doc-025",
+      "title": "Ranking with lexical filters and query boosts",
+      "body": "Lexical filters can restrict results to relevant categories while query boosts can emphasize important terms. This improves precision for narrow intents.",
+      "summary_text": "Using filters and boosts to improve ranking precision.",
+      "semantic_text": "How can I use lexical filters and boosts in Vespa ranking?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-026",
+      "title": "Multi-lingual embeddings for cross-language search",
+      "body": "Cross-language retrieval uses multilingual embeddings to map queries and documents into a shared semantic space. This helps when users search in different languages.",
+      "summary_text": "Cross-language semantic retrieval concepts.",
+      "semantic_text": "How do multilingual embeddings support cross-language search?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-027",
+      "title": "Using tokenization to improve BM25 recall",
+      "body": "Tokenization choices strongly influence BM25 recall. Stemming, language handling, and custom tokenizers can change which matches are considered relevant.",
+      "summary_text": "Tokenization strategies for better BM25 recall.",
+      "semantic_text": "Why does tokenization matter for BM25 retrieval?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-028",
+      "title": "Reranking candidates from recall-oriented retrieval",
+      "body": "A recall-oriented retrieval stage can return many candidates, and a reranker can then promote the most relevant ones. This is common in modern search systems.",
+      "summary_text": "Two-stage retrieval and reranking for search.",
+      "semantic_text": "How does reranking improve search result quality?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-029",
+      "title": "Dense retrieval for long-form questions",
+      "body": "Dense retrieval is especially useful for long-form questions because it captures semantic intent even when the wording differs from the document text.",
+      "summary_text": "Using semantic retrieval for question understanding.",
+      "semantic_text": "Why is dense retrieval useful for long-form queries?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-030",
+      "title": "Query expansion for ambiguous search terms",
+      "body": "Ambiguous queries can benefit from expansion terms derived from context, synonyms, or user feedback. Query expansion can improve retrieval coverage.",
+      "summary_text": "Improving ambiguous query retrieval with expansion.",
+      "semantic_text": "How can query expansion help with ambiguous queries?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-031",
+      "title": "Learning-to-rank for search relevance",
+      "body": "Learning-to-rank models use labeled examples to combine multiple features such as BM25, recency, click signals, and semantic similarity.",
+      "summary_text": "Using feature-based ranking models.",
+      "semantic_text": "What is learning-to-rank and how is it used in search?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-032",
+      "title": "Stopwords and lexical normalization in search",
+      "body": "Stopping and normalization can remove noise from queries and documents, but they must be tuned carefully to preserve important phrase meaning.",
+      "summary_text": "Lexical normalization and stopword handling.",
+      "semantic_text": "How do stopwords affect search quality?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-033",
+      "title": "Semantic matching for support tickets",
+      "body": "Support ticket search benefits from semantic matching because users often describe symptoms in everyday language rather than domain jargon.",
+      "summary_text": "Semantic retrieval for support and help desks.",
+      "semantic_text": "How can semantic matching improve support ticket retrieval?",
+      "category": "QA"
+    },
+    {
+      "id": "doc-034",
+      "title": "Combining recency and relevance in product search",
+      "body": "Product search often needs a balance of relevance and freshness so that recent inventory or offers are surfaced at the right time.",
+      "summary_text": "Recency-aware product retrieval.",
+      "semantic_text": "How should recency be combined with relevance in product search?",
+      "category": "E-commerce"
+    },
+    {
+      "id": "doc-035",
+      "title": "Improving recall with synonym expansion",
+      "body": "Synonym expansion can help when users use different terms for the same concept, especially in technical or medical domains.",
+      "summary_text": "Expanding synonyms to improve retrieval coverage.",
+      "semantic_text": "Why is synonym expansion useful for search recall?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-036",
+      "title": "Indexing dense vectors in Vespa",
+      "body": "Dense vectors can be indexed in Vespa for nearest-neighbor search, allowing semantic retrieval over large document collections.",
+      "summary_text": "Dense indexing techniques in Vespa.",
+      "semantic_text": "How are dense vectors indexed in Vespa?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-037",
+      "title": "User intent detection for conversational search",
+      "body": "Conversational search requires understanding follow-up intent, context, and incomplete queries. This is a key challenge for modern assistants.",
+      "summary_text": "User intent and context in conversational search.",
+      "semantic_text": "How can search systems better detect user intent?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-038",
+      "title": "Balanced recall and precision for enterprise search",
+      "body": "Enterprise search often needs a balanced tradeoff between high recall and high precision because users depend on both broad coverage and trusted results.",
+      "summary_text": "Precision and recall tradeoffs in enterprise search.",
+      "semantic_text": "How do enterprise search systems balance recall and precision?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-039",
+      "title": "Handling abbreviations and acronyms in search",
+      "body": "Abbreviations and acronyms make retrieval harder, especially when the same letters have multiple meanings. Normalization and expansion can help.",
+      "summary_text": "Improving retrieval for abbreviations and acronyms.",
+      "semantic_text": "How should search systems handle abbreviations?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-040",
+      "title": "Entity-aware retrieval for knowledge bases",
+      "body": "Entity-aware retrieval uses named entities and structured metadata to improve ranking for factoid and knowledge-base queries.",
+      "summary_text": "Entity-aware ranking for knowledge retrieval.",
+      "semantic_text": "How can entity awareness improve knowledge-base search?",
+      "category": "Knowledge"
+    },
+    {
+      "id": "doc-041",
+      "title": "Contextualized embeddings for short queries",
+      "body": "Short queries often need contextualized embeddings to recover intent from the surrounding conversation and task context.",
+      "summary_text": "Contextual embeddings for short queries.",
+      "semantic_text": "Why do short queries need contextualized embeddings?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-042",
+      "title": "Search evaluation with click-through data",
+      "body": "Click-through logs can provide weak supervision for search systems, but they must be interpreted carefully because clicks are noisy signals.",
+      "summary_text": "Using click data for search evaluation.",
+      "semantic_text": "How can click-through data help search evaluation?",
+      "category": "Evaluation"
+    },
+    {
+      "id": "doc-043",
+      "title": "Hybrid ranking for news and article search",
+      "body": "News search benefits from hybrid ranking because topical relevance, recency, freshness, and authority all influence which stories should appear first.",
+      "summary_text": "Hybrid ranking for dynamic news content.",
+      "semantic_text": "How can hybrid ranking help news retrieval?",
+      "category": "Hybrid Search"
+    },
+    {
+      "id": "doc-044",
+      "title": "Phrase matching with shingles and n-grams",
+      "body": "Shingles and n-gram matching can better preserve word order and phrase meaning than simple token matching in some retrieval tasks.",
+      "summary_text": "Using shingles and n-grams for phrase search.",
+      "semantic_text": "How do shingles improve phrase matching?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-045",
+      "title": "Domain-specific embeddings for technical documents",
+      "body": "Domain-specific embeddings can outperform general embeddings when the vocabulary is specialized or highly technical.",
+      "summary_text": "Specialized embeddings for technical search.",
+      "semantic_text": "Why might domain-specific embeddings perform better?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-046",
+      "title": "Latency-aware retrieval strategies",
+      "body": "Latency-aware retrieval strategies choose shallower or deeper candidate generation depending on the query and available compute budget.",
+      "summary_text": "Balancing quality and latency in retrieval.",
+      "semantic_text": "How can retrieval systems balance latency and quality?",
+      "category": "Systems"
+    },
+    {
+      "id": "doc-047",
+      "title": "Personalization in search ranking",
+      "body": "Personalization can improve search experience by considering user history, preferences, and context, though it must be handled carefully.",
+      "summary_text": "Personalized ranking for search.",
+      "semantic_text": "How does personalization affect search ranking?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-048",
+      "title": "Evaluating search quality with offline benchmarks",
+      "body": "Offline benchmarks provide reproducible evaluation for ranking experiments, especially when online user feedback is unavailable.",
+      "summary_text": "Offline evaluation of search systems.",
+      "semantic_text": "What are the benefits of offline search benchmarks?",
+      "category": "Evaluation"
+    },
+    {
+      "id": "doc-049",
+      "title": "BM25 phrase and exact matching in Vespa",
+      "body": "This doc focuses on phrase query scoring and exact match retrieval for Vespa search.",
+      "summary_text": "Phrase query and exact match BM25 tuning.",
+      "semantic_text": "How do exact phrase matches affect BM25 results?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-050",
+      "title": "Closest related lexical match for embedding search",
+      "body": "This document is a strong lexical near miss for embedding-based rankers that still contains many similar terms.",
+      "summary_text": "A lexical near-miss candidate document.",
+      "semantic_text": "What happens when lexical and semantic matches conflict?",
+      "category": "Search"
+    }
+  ],
+  "queries": [
+    {
+      "id": "q1",
+      "text": "What is hybrid search?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-004",
+        "doc-018"
+      ],
+      "relevance_scores": {
+        "doc-004": 2.0,
+        "doc-018": 1.0
+      },
+      "negative_ids": [
+        "doc-011",
+        "doc-009",
+        "doc-005",
+        "doc-008",
+        "doc-010"
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "How do I configure BM25 in Vespa?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-002"
+      ],
+      "relevance_scores": {
+        "doc-002": 2.0
+      },
+      "negative_ids": [
+        "doc-003",
+        "doc-008",
+        "doc-004",
+        "doc-015",
+        "doc-001"
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "semantic retrieval using embeddings",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-003",
+        "doc-014",
+        "doc-019"
+      ],
+      "relevance_scores": {
+        "doc-003": 2.0,
+        "doc-014": 1.5,
+        "doc-019": 1.0
+      },
+      "negative_ids": [
+        "doc-006",
+        "doc-010",
+        "doc-002",
+        "doc-012",
+        "doc-015"
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "phrase queries exact match support",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-011",
+        "doc-017"
+      ],
+      "relevance_scores": {
+        "doc-011": 2.0,
+        "doc-017": 1.0
+      },
+      "negative_ids": [
+        "doc-010",
+        "doc-003",
+        "doc-002",
+        "doc-012",
+        "doc-007"
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Why use cosine similarity instead of angular distance?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-007"
+      ],
+      "relevance_scores": {
+        "doc-007": 2.0
+      },
+      "negative_ids": [
+        "doc-012",
+        "doc-011",
+        "doc-005",
+        "doc-001",
+        "doc-009"
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "How to evaluate search relevance with MRR",
+      "type": "question",
+      "relevant_ids": [
+        "doc-006",
+        "doc-020"
+      ],
+      "relevance_scores": {
+        "doc-006": 2.0,
+        "doc-020": 1.0
+      },
+      "negative_ids": [
+        "doc-003",
+        "doc-014",
+        "doc-011",
+        "doc-009",
+        "doc-008"
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "product catalog keyword and semantic search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-013",
+        "doc-023"
+      ],
+      "relevance_scores": {
+        "doc-013": 2.0,
+        "doc-023": 1.0
+      },
+      "negative_ids": [
+        "doc-010",
+        "doc-002",
+        "doc-011",
+        "doc-009",
+        "doc-001"
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "What are the components of a FAQ ranking dataset?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-010",
+        "doc-024"
+      ],
+      "relevance_scores": {
+        "doc-010": 2.0,
+        "doc-024": 1.0
+      },
+      "negative_ids": [
+        "doc-011",
+        "doc-004",
+        "doc-014",
+        "doc-003",
+        "doc-006"
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "How do question answering systems retrieve passages?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-008"
+      ],
+      "relevance_scores": {
+        "doc-008": 2.0
+      },
+      "negative_ids": [
+        "doc-007",
+        "doc-011",
+        "doc-002",
+        "doc-016",
+        "doc-012"
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "normalize embeddings before search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-005"
+      ],
+      "relevance_scores": {
+        "doc-005": 2.0
+      },
+      "negative_ids": [
+        "doc-007",
+        "doc-001",
+        "doc-004",
+        "doc-012",
+        "doc-013"
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "What are the symptoms of high blood pressure?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-015",
+        "doc-021"
+      ],
+      "relevance_scores": {
+        "doc-015": 2.0,
+        "doc-021": 1.0
+      },
+      "negative_ids": [
+        "doc-006",
+        "doc-003",
+        "doc-002",
+        "doc-013",
+        "doc-007"
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "How do I bake sourdough bread?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-016",
+        "doc-022"
+      ],
+      "relevance_scores": {
+        "doc-016": 2.0,
+        "doc-022": 1.0
+      },
+      "negative_ids": [
+        "doc-014",
+        "doc-002",
+        "doc-001",
+        "doc-009",
+        "doc-013"
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "How do lexical filters improve ranking?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-025"
+      ],
+      "relevance_scores": {
+        "doc-025": 2.0
+      },
+      "negative_ids": [
+        "doc-027",
+        "doc-030",
+        "doc-032",
+        "doc-038",
+        "doc-046"
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "multilingual embeddings for cross-language search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-026"
+      ],
+      "relevance_scores": {
+        "doc-026": 2.0
+      },
+      "negative_ids": [
+        "doc-029",
+        "doc-041",
+        "doc-045",
+        "doc-036",
+        "doc-031"
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "How does tokenization affect BM25 recall?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-027"
+      ],
+      "relevance_scores": {
+        "doc-027": 2.0
+      },
+      "negative_ids": [
+        "doc-025",
+        "doc-032",
+        "doc-035",
+        "doc-044",
+        "doc-038"
+      ]
+    },
+    {
+      "id": "q16",
+      "text": "reranking candidates from initial retrieval",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-028"
+      ],
+      "relevance_scores": {
+        "doc-028": 2.0
+      },
+      "negative_ids": [
+        "doc-031",
+        "doc-042",
+        "doc-046",
+        "doc-043",
+        "doc-048"
+      ]
+    },
+    {
+      "id": "q17",
+      "text": "Why is dense retrieval useful for long questions?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-029"
+      ],
+      "relevance_scores": {
+        "doc-029": 2.0
+      },
+      "negative_ids": [
+        "doc-026",
+        "doc-036",
+        "doc-041",
+        "doc-045",
+        "doc-028"
+      ]
+    },
+    {
+      "id": "q18",
+      "text": "query expansion for ambiguous search terms",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-030"
+      ],
+      "relevance_scores": {
+        "doc-030": 2.0
+      },
+      "negative_ids": [
+        "doc-035",
+        "doc-039",
+        "doc-037",
+        "doc-032",
+        "doc-038"
+      ]
+    },
+    {
+      "id": "q19",
+      "text": "What is learning to rank in search?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-031"
+      ],
+      "relevance_scores": {
+        "doc-031": 2.0
+      },
+      "negative_ids": [
+        "doc-028",
+        "doc-042",
+        "doc-043",
+        "doc-047",
+        "doc-048"
+      ]
+    },
+    {
+      "id": "q20",
+      "text": "stopwords and normalization in search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-032"
+      ],
+      "relevance_scores": {
+        "doc-032": 2.0
+      },
+      "negative_ids": [
+        "doc-027",
+        "doc-030",
+        "doc-035",
+        "doc-039",
+        "doc-044"
+      ]
+    },
+    {
+      "id": "q21",
+      "text": "How can semantic matching help support tickets?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-033"
+      ],
+      "relevance_scores": {
+        "doc-033": 2.0
+      },
+      "negative_ids": [
+        "doc-037",
+        "doc-038",
+        "doc-040",
+        "doc-042",
+        "doc-048"
+      ]
+    },
+    {
+      "id": "q22",
+      "text": "recency and relevance in product search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-034"
+      ],
+      "relevance_scores": {
+        "doc-034": 2.0
+      },
+      "negative_ids": [
+        "doc-033",
+        "doc-040",
+        "doc-043",
+        "doc-046",
+        "doc-047"
+      ]
+    },
+    {
+      "id": "q23",
+      "text": "How does synonym expansion improve recall?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-035"
+      ],
+      "relevance_scores": {
+        "doc-035": 2.0
+      },
+      "negative_ids": [
+        "doc-030",
+        "doc-037",
+        "doc-039",
+        "doc-044",
+        "doc-045"
+      ]
+    },
+    {
+      "id": "q24",
+      "text": "How are dense vectors indexed in Vespa?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-036"
+      ],
+      "relevance_scores": {
+        "doc-036": 2.0
+      },
+      "negative_ids": [
+        "doc-025",
+        "doc-028",
+        "doc-029",
+        "doc-041",
+        "doc-046"
+      ]
+    },
+    {
+      "id": "q25",
+      "text": "exact phrase matching in Vespa",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-011",
+        "doc-017",
+        "doc-049"
+      ],
+      "relevance_scores": {
+        "doc-011": 2.0,
+        "doc-017": 1.5,
+        "doc-049": 1.0
+      },
+      "negative_ids": [
+        "doc-003",
+        "doc-005",
+        "doc-002",
+        "doc-009",
+        "doc-050"
+      ]
+    },
+    {
+      "id": "q26",
+      "text": "lexical near miss versus semantic similarity",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-050",
+        "doc-004"
+      ],
+      "relevance_scores": {
+        "doc-050": 2.0,
+        "doc-004": 1.0
+      },
+      "negative_ids": [
+        "doc-003",
+        "doc-014",
+        "doc-019",
+        "doc-013",
+        "doc-020"
+      ]
+    },
+    {
+      "id": "q27",
+      "text": "phrase query boosting and reranking",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-028",
+        "doc-049"
+      ],
+      "relevance_scores": {
+        "doc-028": 2.0,
+        "doc-049": 1.0
+      },
+      "negative_ids": [
+        "doc-011",
+        "doc-017",
+        "doc-013",
+        "doc-003",
+        "doc-014"
+      ]
+    }
+  ]
+}

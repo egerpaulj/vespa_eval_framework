@@ -1,0 +1,221 @@
+schema doc {
+
+    document doc {
+
+        field id type string {
+            indexing: summary | attribute
+        }
+
+        field title type string {
+            indexing: index | summary
+            index {
+                enable-bm25
+            }
+        }
+
+        field category type string {
+            indexing: index | summary
+            index {
+                enable-bm25
+            }
+        }
+
+        field body type string {
+            indexing: index | summary
+            index {
+                enable-bm25
+            }
+        }
+
+        field summary_text type string {
+            indexing: index | summary
+            index {
+                enable-bm25
+            }
+        }
+
+        field semantic_text type string {
+            indexing: index | summary
+            index {
+                enable-bm25
+            }
+        }
+
+        field embedding type tensor<float>(d[1024]) {
+            indexing: attribute | index
+            attribute {
+                distance-metric: angular
+            }
+            index {
+                hnsw {
+                    max-links-per-node: 16
+                    neighbors-to-explore-at-insert: 100
+                }
+            }
+        }
+
+        field title_embedding type tensor<float>(d[1024]) {
+            indexing: attribute | index
+            attribute {
+                distance-metric: angular
+            }
+            index {
+                hnsw {
+                    max-links-per-node: 16
+                    neighbors-to-explore-at-insert: 100
+                }
+            }
+        }
+
+        field body_embedding type tensor<float>(d[1024]) {
+            indexing: attribute | index
+            attribute {
+                distance-metric: angular
+            }
+            index {
+                hnsw {
+                    max-links-per-node: 16
+                    neighbors-to-explore-at-insert: 100
+                }
+            }
+        }
+    }
+
+    fieldset default {
+        fields: title, body, summary_text, semantic_text
+    }
+
+    fieldset title_and_body {
+        fields: title, body
+    }
+
+    fieldset semantic {
+        fields: summary_text, semantic_text
+    }
+
+    rank-profile bm25_title_body {
+        first-phase {
+            expression: bm25(title) + bm25(body)
+        }
+    }
+
+    rank-profile bm25_semantic_summary {
+        first-phase {
+            expression: bm25(title) + bm25(body) + bm25(summary_text) + bm25(semantic_text)
+        }
+    }
+
+    rank-profile bm25_title_body_boosted {
+        first-phase {
+            expression: 2.0 * bm25(title) + 1.0 * bm25(body)
+        }
+    }
+
+    rank-profile bm25_semantic_summary_boosted {
+        first-phase {
+            expression: 2.0 * bm25(title) + 1.0 * bm25(body) + 0.8 * bm25(summary_text) + 0.6 * bm25(semantic_text)
+        }
+    }
+
+    rank-profile bm25_title_body_phrase {
+        first-phase {
+            expression: 2.5 * bm25(title) + 1.0 * bm25(body) + 4.0 * fieldMatch(title) + 2.0 * fieldMatch(body)
+        }
+    }
+
+    rank-profile bm25_semantic_summary_phrase {
+        first-phase {
+            expression: 2.5 * bm25(title) + 1.0 * bm25(body) + 0.8 * bm25(summary_text) + 0.6 * bm25(semantic_text) + 4.0 * fieldMatch(title) + 2.0 * fieldMatch(body)
+        }
+    }
+
+    rank-profile hybrid_semantic_summary {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: 1.0 * bm25(title) + 0.8 * bm25(body) + 0.7 * bm25(summary_text) + 0.5 * bm25(semantic_text) + 0.8 * closeness(field, embedding)
+        }
+    }
+
+    rank-profile hybrid_multi_weighted {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: 1.0 * bm25(title) + 0.8 * bm25(body) + 0.4 * closeness(field, title_embedding) + 0.4 * closeness(field, body_embedding)
+        }
+    }
+
+    rank-profile hybrid_rerank {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: bm25(title) + bm25(body) + 0.8 * closeness(field, embedding)
+        }
+
+        second-phase {
+            rerank-count: 100
+            expression: 3.0 * bm25(title) + 1.5 * bm25(body) + 0.8 * bm25(summary_text) + 0.6 * bm25(semantic_text) + 4.0 * fieldMatch(title) + 2.0 * fieldMatch(body) + 0.8 * closeness(field, embedding)
+        }
+    }
+
+    rank-profile hybrid_multi_rerank {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: bm25(title) + bm25(body) + 0.5 * closeness(field, title_embedding) + 0.5 * closeness(field, body_embedding)
+        }
+
+        second-phase {
+            rerank-count: 100
+            expression: 2.5 * bm25(title) + 1.2 * bm25(body) + 4.0 * fieldMatch(title) + 2.0 * fieldMatch(body) + 0.4 * closeness(field, title_embedding) + 0.4 * closeness(field, body_embedding)
+        }
+    }
+
+    rank-profile dense_embedding {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: closeness(field, embedding)
+        }
+    }
+
+    rank-profile multi_dense {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: 0.6 * closeness(field, title_embedding) + 0.4 * closeness(field, body_embedding)
+        }
+    }
+
+    rank-profile hybrid {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: bm25(title)+ bm25(body) + 0.8 * closeness(field, embedding)
+        }
+    }
+
+    rank-profile hybrid_multi {
+        inputs {
+            query(q) tensor<float>(d[1024])
+        }
+
+        first-phase {
+            expression: bm25(title) + bm25(body) + 0.5 * closeness(field, title_embedding) + 0.5 * closeness(field, body_embedding)
+        }
+    }
+}

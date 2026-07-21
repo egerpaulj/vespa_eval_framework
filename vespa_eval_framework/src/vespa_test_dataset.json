@@ -1,0 +1,315 @@
+{
+  "documents": [
+    {
+      "id": "doc-001",
+      "title": "Introduction to Vespa search engine",
+      "body": "Vespa is a scalable search engine for structured and unstructured content. It supports BM25, neural ranking, and hybrid search workflows.",
+      "summary_text": "Overview of Vespa search and ranking capabilities.",
+      "semantic_text": "What is Vespa and how does it combine lexical search with neural ranking?",
+      "category": "Search Platform"
+    },
+    {
+      "id": "doc-002",
+      "title": "How to configure BM25 ranking in Vespa",
+      "body": "BM25 ranking in Vespa is configured through schema field indexing and rank profiles. Use tokenization, stopwords, and field weights to tune retrieval.",
+      "summary_text": "BM25 setup and tuning guidance for Vespa fields.",
+      "semantic_text": "How do I set up BM25 scoring in a Vespa document schema?",
+      "category": "Ranking"
+    },
+    {
+      "id": "doc-003",
+      "title": "Dense vector retrieval with document embeddings",
+      "body": "Embedding-based retrieval uses vector similarity for semantic matching. Documents store a dense tensor embedding and queries use neural vector encodings.",
+      "summary_text": "Dense retrieval uses embeddings for semantic search.",
+      "semantic_text": "How can I use document embeddings for semantic retrieval in Vespa?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-004",
+      "title": "Hybrid search strategy combining BM25 and embeddings",
+      "body": "Hybrid search blends lexical BM25 signals with embedding similarity to handle both exact keyword matches and semantic meaning.",
+      "summary_text": "Hybrid search mixes sparse and dense retrieval scores.",
+      "semantic_text": "When should I combine BM25 and neural embeddings in search ranking?",
+      "category": "Hybrid Search"
+    },
+    {
+      "id": "doc-005",
+      "title": "Best practices for embedding normalization",
+      "body": "Normalize embedding vectors before indexing and querying to ensure stable cosine similarity or angular distance comparisons.",
+      "summary_text": "Recommendations for normalization of embedding vectors.",
+      "semantic_text": "Why should embeddings be normalized before similarity search?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-006",
+      "title": "How to evaluate search relevance with MRR and recall",
+      "body": "Evaluation metrics like MRR, MAP, precision@k, and recall@k help compare search strategy quality across query types.",
+      "summary_text": "Search relevance evaluation metrics for ranking comparison.",
+      "semantic_text": "What metrics should I use to evaluate retrieval performance?",
+      "category": "Evaluation"
+    },
+    {
+      "id": "doc-007",
+      "title": "Understanding cosine similarity and angular distance",
+      "body": "Cosine similarity measures angle between vectors while angular distance is a normalized form. Both are common in embedding similarity search.",
+      "summary_text": "Cosine and angular distance for vector search.",
+      "semantic_text": "What is the difference between cosine similarity and angular distance?",
+      "category": "Math"
+    },
+    {
+      "id": "doc-008",
+      "title": "Question answering systems and passage retrieval",
+      "body": "Question answering pipelines use passage retrieval to find candidate documents, then apply a reader model to extract the answer.",
+      "summary_text": "Passage retrieval for question answering systems.",
+      "semantic_text": "How do question answering systems retrieve the best passages?",
+      "category": "QA"
+    },
+    {
+      "id": "doc-009",
+      "title": "Using fieldsets for text and semantic data in Vespa",
+      "body": "Fieldsets group fields for search and ranking. Use a semantic fieldset for embeddings and a lexical fieldset for BM25 text search.",
+      "summary_text": "Fieldset design for lexical and semantic search in Vespa.",
+      "semantic_text": "How do I group search fields in Vespa for hybrid ranking?",
+      "category": "Schema"
+    },
+    {
+      "id": "doc-010",
+      "title": "How to build a FAQ ranking dataset",
+      "body": "A FAQ ranking dataset contains questions, answers, and relevance labels for query-document matching evaluation.",
+      "summary_text": "Design principles for a FAQ retrieval dataset.",
+      "semantic_text": "What are the components of a good FAQ search dataset?",
+      "category": "Datasets"
+    },
+    {
+      "id": "doc-011",
+      "title": "Handling phrase queries and exact match search",
+      "body": "Phrase queries require careful tokenization and indexing. Exact phrase matching can be boosted with specialized fields or query-time filters.",
+      "summary_text": "Phrase query support and exact matching strategies.",
+      "semantic_text": "How do I support exact phrase queries in my search schema?",
+      "category": "Search"
+    },
+    {
+      "id": "doc-012",
+      "title": "Using title and body embeddings separately in Vespa",
+      "body": "Separate embeddings for title and body allow fine-grained semantic ranking and different weighting for short versus long text.",
+      "summary_text": "Multi-vector embedding use cases for title and body fields.",
+      "semantic_text": "Why would I keep title and body embeddings separate for ranking?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-013",
+      "title": "Combining lexical and semantic search across product catalogs",
+      "body": "Product search benefits from combining keyword matching on product names with vector similarity on descriptions and features.",
+      "summary_text": "Hybrid product search using BM25 and embeddings.",
+      "semantic_text": "How can I search a product catalog with both keywords and semantic similarity?",
+      "category": "E-commerce"
+    },
+    {
+      "id": "doc-014",
+      "title": "How embeddings improve semantic retrieval",
+      "body": "Embeddings capture concept similarity beyond exact wording, enabling semantic retrieval for paraphrases and question/answer matching.",
+      "summary_text": "Advantages of using embeddings for semantic search.",
+      "semantic_text": "Why are embeddings useful for semantic search queries?",
+      "category": "Embeddings"
+    },
+    {
+      "id": "doc-015",
+      "title": "Symptoms of high blood pressure and medical advice",
+      "body": "High blood pressure can present with headaches, dizziness, and chest discomfort. Monitoring lifestyle and medication are common recommendations.",
+      "summary_text": "Common symptoms and guidance for high blood pressure.",
+      "semantic_text": "What are the symptoms of high blood pressure?",
+      "category": "Health"
+    },
+    {
+      "id": "doc-016",
+      "title": "How to bake sourdough bread and maintain a starter",
+      "body": "Sourdough bread requires a healthy starter, long fermentation, and careful hydration control to produce a sour-yet-soft crumb.",
+      "summary_text": "Practical sourdough baking and starter care tips.",
+      "semantic_text": "How do I bake sourdough bread from a starter?",
+      "category": "Cooking"
+    }
+  ],
+  "queries": [
+    {
+      "id": "q1",
+      "text": "What is hybrid search?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-004"
+      ],
+      "negative_ids": [
+        "doc-011",
+        "doc-009",
+        "doc-005",
+        "doc-008",
+        "doc-010"
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "How do I configure BM25 in Vespa?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-002"
+      ],
+      "negative_ids": [
+        "doc-003",
+        "doc-008",
+        "doc-004",
+        "doc-015",
+        "doc-001"
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "semantic retrieval using embeddings",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-003",
+        "doc-014"
+      ],
+      "negative_ids": [
+        "doc-006",
+        "doc-010",
+        "doc-002",
+        "doc-012",
+        "doc-015"
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "phrase queries exact match support",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-011"
+      ],
+      "negative_ids": [
+        "doc-010",
+        "doc-003",
+        "doc-002",
+        "doc-012",
+        "doc-007"
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Why use cosine similarity instead of angular distance?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-007"
+      ],
+      "negative_ids": [
+        "doc-012",
+        "doc-011",
+        "doc-005",
+        "doc-001",
+        "doc-009"
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "How to evaluate search relevance with MRR",
+      "type": "question",
+      "relevant_ids": [
+        "doc-006"
+      ],
+      "negative_ids": [
+        "doc-003",
+        "doc-014",
+        "doc-011",
+        "doc-009",
+        "doc-008"
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "product catalog keyword and semantic search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-013"
+      ],
+      "negative_ids": [
+        "doc-010",
+        "doc-002",
+        "doc-011",
+        "doc-009",
+        "doc-001"
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "What are the components of a FAQ ranking dataset?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-010"
+      ],
+      "negative_ids": [
+        "doc-011",
+        "doc-004",
+        "doc-014",
+        "doc-003",
+        "doc-006"
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "How do question answering systems retrieve passages?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-008"
+      ],
+      "negative_ids": [
+        "doc-007",
+        "doc-011",
+        "doc-002",
+        "doc-016",
+        "doc-012"
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "normalize embeddings before search",
+      "type": "phrase",
+      "relevant_ids": [
+        "doc-005"
+      ],
+      "negative_ids": [
+        "doc-007",
+        "doc-001",
+        "doc-004",
+        "doc-012",
+        "doc-013"
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "What are the symptoms of high blood pressure?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-015"
+      ],
+      "negative_ids": [
+        "doc-006",
+        "doc-003",
+        "doc-002",
+        "doc-013",
+        "doc-007"
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "How do I bake sourdough bread?",
+      "type": "question",
+      "relevant_ids": [
+        "doc-016"
+      ],
+      "negative_ids": [
+        "doc-014",
+        "doc-002",
+        "doc-001",
+        "doc-009",
+        "doc-013"
+      ]
+    }
+  ]
+}

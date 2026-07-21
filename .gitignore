@@ -1,0 +1,5 @@
+__pycache__
+*.log
+*.html
+__init__.py
+*.egg-info

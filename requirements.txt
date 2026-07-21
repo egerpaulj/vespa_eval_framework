@@ -1,0 +1,7 @@
+typing
+pydantic
+plotly
+pyvespa
+FlagEmbedding
+flair
+sentence-transformers

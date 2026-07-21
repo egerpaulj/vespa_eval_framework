@@ -1,0 +1,25 @@
+[project]
+name = "vespa_eval_framework"
+version = "0.1.0"
+description = "Framework to evaluate vespa configurations and retrieval strategies"
+readme = "readme.py.md"
+requires-python = ">=3.10.16"
+authors = [
+    {name = "Paul Eger"},
+]
+dependencies = [
+    "typing",  
+    "pydantic",
+    "plotly",
+    "pyvespa",
+    "FlagEmbedding",
+    "flair"
+]
+
+[project.urls]
+homepage = "https://github.com/egerpaulj/vespa_eval_framework"
+repository = "https://github.com/egerpaulj/vespa_eval_framework.git"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["vespa_eval_framework", "*"]
