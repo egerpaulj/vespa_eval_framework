@@ -38,7 +38,7 @@ pip install -e .
 
 ### Execute the benchmark
 
-For a notebook-based getting-started example, see [the example notebook](https://github.com/egerpaulj/vespa_eval_framework/blob/main/notebooks/getting_started.ipynb).
+For a notebook-based getting-started example, see [the example notebook](https://github.com/egerpaulj/vespa_eval_framework/blob/main/vespa.ipynb).
 
 Run the evaluator from the package source directory:
 
@@ -123,7 +123,7 @@ Typical metrics included in the report are:
 
 ## Vespa vs. Elasticsearch
 
-For a deeper comparison, see [docs/vespa_vs_elasticsearch.md](docs/vespa_vs_elasticsearch.md).
+For a deeper comparison, see [docs/vespa_vs_elasticsearch.md](https://github.com/egerpaulj/vespa_eval_framework/blob/main/docs/vespa_vs_elasticsearch.md).
 
 Vespa and Elasticsearch both support full-text search, but they emphasize different strengths.
 
