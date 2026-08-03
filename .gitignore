@@ -3,3 +3,5 @@ __pycache__
 *.html
 __init__.py
 *.egg-info
+*.gz
+*.whl
