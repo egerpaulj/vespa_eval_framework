@@ -1,0 +1,748 @@
+{
+  "documents": [
+    {
+      "id": "sp-001",
+      "title": "Error VESP-4021 document exceeds maximum size",
+      "body": "Feeding fails with error VESP-4021 when a single document is larger than the configured maximum document size. Split the document or raise the limit.",
+      "summary_text": "Explains the VESP-4021 oversized document feed error.",
+      "semantic_text": "Explains the VESP-4021 oversized document feed error.",
+      "category": "Errors"
+    },
+    {
+      "id": "sp-002",
+      "title": "Error VESP-4022 feed operation timed out",
+      "body": "Error VESP-4022 is returned when a feed operation does not complete within the client timeout. Retry with backoff or reduce the feed rate.",
+      "summary_text": "Explains the VESP-4022 feed timeout error.",
+      "semantic_text": "Explains the VESP-4022 feed timeout error.",
+      "category": "Errors"
+    },
+    {
+      "id": "sp-003",
+      "title": "Error VESP-4023 schema field type mismatch",
+      "body": "Error VESP-4023 means a field value does not match the type declared in the schema, for example a string sent to a tensor field.",
+      "summary_text": "Explains the VESP-4023 schema type mismatch error.",
+      "semantic_text": "Explains the VESP-4023 schema type mismatch error.",
+      "category": "Errors"
+    },
+    {
+      "id": "sp-004",
+      "title": "Error VESP-4120 content node unavailable",
+      "body": "Error VESP-4120 signals that no content node could serve the request. Check cluster health and redundancy settings.",
+      "summary_text": "Explains the VESP-4120 unavailable content node error.",
+      "semantic_text": "Explains the VESP-4120 unavailable content node error.",
+      "category": "Errors"
+    },
+    {
+      "id": "sp-005",
+      "title": "Troubleshooting failed feed operations",
+      "body": "A general checklist for failed feed operations: inspect the response status, validate the document against the schema, check size limits and review client timeouts.",
+      "summary_text": "General guide to debugging feed failures.",
+      "semantic_text": "General guide to debugging feed failures.",
+      "category": "Errors"
+    },
+    {
+      "id": "sp-006",
+      "title": "Re-ranking candidates in the second phase",
+      "body": "Re-ranking applies an expensive scoring expression to the best candidates after the first phase. The rerank-count setting limits how many hits are re-scored.",
+      "summary_text": "Second-phase re-ranking of top candidates.",
+      "semantic_text": "Second-phase re-ranking of top candidates.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-007",
+      "title": "Cross-encoder scoring for top candidates",
+      "body": "A cross-encoder model scores each query and document pair jointly. Because it is slow it only runs on a small shortlist of candidates.",
+      "summary_text": "Cross-encoder scoring of a shortlist.",
+      "semantic_text": "Cross-encoder scoring of a shortlist.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-008",
+      "title": "Autoscaling content clusters",
+      "body": "Autoscaling adjusts the number of content nodes based on load and data volume. Resources are resized without downtime.",
+      "summary_text": "Automatic resizing of content clusters.",
+      "semantic_text": "Automatic resizing of content clusters.",
+      "category": "Operations"
+    },
+    {
+      "id": "sp-009",
+      "title": "Manual capacity planning for clusters",
+      "body": "Capacity planning estimates the node count needed for a target query rate and data size, using load tests and headroom for failures.",
+      "summary_text": "Planning cluster capacity by hand.",
+      "semantic_text": "Planning cluster capacity by hand.",
+      "category": "Operations"
+    },
+    {
+      "id": "sp-010",
+      "title": "Nearest neighbor search with HNSW graphs",
+      "body": "Approximate nearest neighbor search uses a hierarchical navigable small world graph to find similar vectors quickly with high recall.",
+      "summary_text": "Approximate nearest neighbor search using HNSW.",
+      "semantic_text": "Approximate nearest neighbor search using HNSW.",
+      "category": "Vectors"
+    },
+    {
+      "id": "sp-011",
+      "title": "Exact brute force vector scan",
+      "body": "An exact scan computes the distance to every vector. It is accurate but its cost grows linearly with the number of documents.",
+      "summary_text": "Exhaustive vector distance computation.",
+      "semantic_text": "Exhaustive vector distance computation.",
+      "category": "Vectors"
+    },
+    {
+      "id": "sp-012",
+      "title": "Running ONNX models in the second phase",
+      "body": "Vespa evaluates ONNX models during ranking. Declare the model in the schema and call it from the second-phase expression.",
+      "summary_text": "ONNX model evaluation during ranking.",
+      "semantic_text": "ONNX model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-013",
+      "title": "Running XGBoost models in the second phase",
+      "body": "Vespa evaluates XGBoost gradient boosted trees during ranking. Declare the model file in the schema and call it from the second-phase expression.",
+      "summary_text": "XGBoost model evaluation during ranking.",
+      "semantic_text": "XGBoost model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-014",
+      "title": "Running LightGBM models in the second phase",
+      "body": "Vespa evaluates LightGBM gradient boosted trees during ranking. Declare the model file in the schema and call it from the second-phase expression.",
+      "summary_text": "LightGBM model evaluation during ranking.",
+      "semantic_text": "LightGBM model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-015",
+      "title": "Running TensorFlow models in the second phase",
+      "body": "Vespa can import TensorFlow saved models and evaluate them during ranking from the second-phase expression.",
+      "summary_text": "TensorFlow model evaluation during ranking.",
+      "semantic_text": "TensorFlow model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-016",
+      "title": "Reducing query latency",
+      "body": "To make results return sooner, lower targetHits, cache frequent queries, trim expensive rank expressions and keep hot data in memory.",
+      "summary_text": "Ways to cut response time of search requests.",
+      "semantic_text": "Ways to cut response time of search requests.",
+      "category": "Performance"
+    },
+    {
+      "id": "sp-017",
+      "title": "Designing a search results page",
+      "body": "A good results page shows snippets, highlights the matched words, offers filters and paginates results so people can scan them quickly.",
+      "summary_text": "User interface advice for result pages.",
+      "semantic_text": "User interface advice for result pages.",
+      "category": "UX"
+    },
+    {
+      "id": "sp-018",
+      "title": "Keeping answers fresh as content changes",
+      "body": "Documents can be updated in place with partial updates, so changes become searchable within seconds without re-indexing everything.",
+      "summary_text": "Partial updates make new content searchable fast.",
+      "semantic_text": "Partial updates make new content searchable fast.",
+      "category": "Indexing"
+    },
+    {
+      "id": "sp-019",
+      "title": "Handling users who misspell words",
+      "body": "Spelling tolerance can come from fuzzy matching, n-gram indexing or embeddings that map similar surface forms close together.",
+      "summary_text": "Coping with typos in queries.",
+      "semantic_text": "Coping with typos in queries.",
+      "category": "Relevance"
+    },
+    {
+      "id": "sp-020",
+      "title": "Why lexical and semantic signals complement each other",
+      "body": "Keyword matching is precise for names and codes while embeddings capture meaning. Combining both covers more information needs than either alone.",
+      "summary_text": "Complementary strengths of lexical and semantic retrieval.",
+      "semantic_text": "Complementary strengths of lexical and semantic retrieval.",
+      "category": "Relevance"
+    },
+    {
+      "id": "sp-021",
+      "title": "Learned sparse retrieval with BGE-M3",
+      "body": "BGE-M3 produces lexical weights per token. These sparse vectors can be indexed in an inverted structure and scored with a dot product.",
+      "summary_text": "Learned sparse vectors from BGE-M3.",
+      "semantic_text": "Learned sparse vectors from BGE-M3.",
+      "category": "Vectors"
+    },
+    {
+      "id": "sp-022",
+      "title": "Weighting query terms by importance",
+      "body": "Not every query word matters equally. Term weighting boosts rare informative words and down-weights filler words.",
+      "summary_text": "Term importance weighting in ranking.",
+      "semantic_text": "Term importance weighting in ranking.",
+      "category": "Relevance"
+    },
+    {
+      "id": "sp-023",
+      "title": "Pruning weak query terms for speed",
+      "body": "Dropping the lowest weighted query terms shrinks the work done by the matching engine at a small cost in recall.",
+      "summary_text": "Query term pruning speeds up matching.",
+      "semantic_text": "Query term pruning speeds up matching.",
+      "category": "Performance"
+    },
+    {
+      "id": "sp-024",
+      "title": "Multilingual search with a single model",
+      "body": "One multilingual model can embed German, French and English text into a shared space so queries in one language find documents in another.",
+      "summary_text": "Cross-language retrieval with shared embeddings.",
+      "semantic_text": "Cross-language retrieval with shared embeddings.",
+      "category": "Vectors"
+    },
+    {
+      "id": "sp-025",
+      "title": "Vespa Aktualisierung von Dokumenten",
+      "body": "Mit partiellen Updates lassen sich einzelne Felder eines Dokuments ändern, ohne das gesamte Dokument neu zu indexieren.",
+      "summary_text": "Partielle Updates in Vespa auf Deutsch.",
+      "semantic_text": "Partielle Updates in Vespa auf Deutsch.",
+      "category": "Indexing"
+    },
+    {
+      "id": "sp-026",
+      "title": "Weighted OR matching with WAND",
+      "body": "The wand operator retrieves the documents with the highest dot product between weighted query terms and weighted document terms without scoring everything.",
+      "summary_text": "WAND operator for weighted sparse matching.",
+      "semantic_text": "WAND operator for weighted sparse matching.",
+      "category": "Vectors"
+    },
+    {
+      "id": "sp-027",
+      "title": "Hybrid ranking with several signals",
+      "body": "A linear combination of BM25, dense closeness and sparse scores can be tuned per use case, then refined by a slower second phase.",
+      "summary_text": "Blending lexical, dense and sparse scores.",
+      "semantic_text": "Blending lexical, dense and sparse scores.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-028",
+      "title": "Choosing a text analyzer",
+      "body": "Analyzers decide how text is split into tokens, lowercased and stemmed, which affects which queries match which documents.",
+      "summary_text": "Tokenization and stemming choices.",
+      "semantic_text": "Tokenization and stemming choices.",
+      "category": "Relevance"
+    },
+    {
+      "id": "sp-029",
+      "title": "Release notes 8.314.12",
+      "body": "Release 8.314.12 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-90311.",
+      "summary_text": "Release notes for version 8.314.12, ticket VSP-90311.",
+      "semantic_text": "Release notes for version 8.314.12, ticket VSP-90311.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-030",
+      "title": "Release notes 8.314.17",
+      "body": "Release 8.314.17 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-90427.",
+      "summary_text": "Release notes for version 8.314.17, ticket VSP-90427.",
+      "semantic_text": "Release notes for version 8.314.17, ticket VSP-90427.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-031",
+      "title": "Release notes 8.320.4",
+      "body": "Release 8.320.4 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-91002.",
+      "summary_text": "Release notes for version 8.320.4, ticket VSP-91002.",
+      "semantic_text": "Release notes for version 8.320.4, ticket VSP-91002.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-032",
+      "title": "Release notes 8.327.8",
+      "body": "Release 8.327.8 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-91888.",
+      "summary_text": "Release notes for version 8.327.8, ticket VSP-91888.",
+      "semantic_text": "Release notes for version 8.327.8, ticket VSP-91888.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-033",
+      "title": "Release notes 8.331.1",
+      "body": "Release 8.331.1 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-92150.",
+      "summary_text": "Release notes for version 8.331.1, ticket VSP-92150.",
+      "semantic_text": "Release notes for version 8.331.1, ticket VSP-92150.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-034",
+      "title": "Release notes 8.340.9",
+      "body": "Release 8.340.9 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-92731.",
+      "summary_text": "Release notes for version 8.340.9, ticket VSP-92731.",
+      "semantic_text": "Release notes for version 8.340.9, ticket VSP-92731.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-035",
+      "title": "Release notes 8.352.3",
+      "body": "Release 8.352.3 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-93310.",
+      "summary_text": "Release notes for version 8.352.3, ticket VSP-93310.",
+      "semantic_text": "Release notes for version 8.352.3, ticket VSP-93310.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-036",
+      "title": "Release notes 8.361.6",
+      "body": "Release 8.361.6 contains stability fixes and minor performance improvements for the search container and content nodes. Tracked as VSP-94075.",
+      "summary_text": "Release notes for version 8.361.6, ticket VSP-94075.",
+      "semantic_text": "Release notes for version 8.361.6, ticket VSP-94075.",
+      "category": "Releases"
+    },
+    {
+      "id": "sp-037",
+      "title": "Running CatBoost models in the second phase",
+      "body": "Vespa evaluates CatBoost models during ranking. Export the model, declare it in the schema and call it from the second-phase expression.",
+      "summary_text": "CatBoost model evaluation during ranking.",
+      "semantic_text": "CatBoost model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-038",
+      "title": "Running scikit-learn random forest models in the second phase",
+      "body": "Vespa evaluates scikit-learn random forest models during ranking. Export the model, declare it in the schema and call it from the second-phase expression.",
+      "summary_text": "scikit-learn random forest model evaluation during ranking.",
+      "semantic_text": "scikit-learn random forest model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-039",
+      "title": "Running PyTorch models in the second phase",
+      "body": "Vespa evaluates PyTorch models during ranking. Export the model, declare it in the schema and call it from the second-phase expression.",
+      "summary_text": "PyTorch model evaluation during ranking.",
+      "semantic_text": "PyTorch model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-040",
+      "title": "Running linear regression models in the second phase",
+      "body": "Vespa evaluates linear regression models during ranking. Export the model, declare it in the schema and call it from the second-phase expression.",
+      "summary_text": "linear regression model evaluation during ranking.",
+      "semantic_text": "linear regression model evaluation during ranking.",
+      "category": "Ranking"
+    },
+    {
+      "id": "sp-041",
+      "title": "Running Keras models in the second phase",
+      "body": "Vespa evaluates Keras models during ranking. Export the model, declare it in the schema and call it from the second-phase expression.",
+      "summary_text": "Keras model evaluation during ranking.",
+      "semantic_text": "Keras model evaluation during ranking.",
+      "category": "Ranking"
+    }
+  ],
+  "queries": [
+    {
+      "id": "s1",
+      "text": "VESP-4021",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Exact error code: lexical match is decisive; embeddings blur numerically similar codes.",
+      "relevant_ids": [
+        "sp-001"
+      ],
+      "relevance_scores": {
+        "sp-001": 2.0
+      },
+      "negative_ids": [
+        "sp-026",
+        "sp-028",
+        "sp-024",
+        "sp-010",
+        "sp-019"
+      ]
+    },
+    {
+      "id": "s2",
+      "text": "VESP-4120 error",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Rare identifier; dense treats all VESP-xxxx docs as near-identical.",
+      "relevant_ids": [
+        "sp-004"
+      ],
+      "relevance_scores": {
+        "sp-004": 2.0
+      },
+      "negative_ids": [
+        "sp-002",
+        "sp-001",
+        "sp-016",
+        "sp-007",
+        "sp-021"
+      ]
+    },
+    {
+      "id": "s3",
+      "text": "what does VESP-4023 mean",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Identifier inside a question; sparse and BM25 key on the code.",
+      "relevant_ids": [
+        "sp-003",
+        "sp-005"
+      ],
+      "relevance_scores": {
+        "sp-003": 2.0,
+        "sp-005": 0.5
+      },
+      "negative_ids": [
+        "sp-008",
+        "sp-027",
+        "sp-004",
+        "sp-024",
+        "sp-007"
+      ]
+    },
+    {
+      "id": "s6",
+      "text": "auto scaling of nodes",
+      "type": "sparse",
+      "favours": "sparse",
+      "why": "'auto scaling' vs 'Autoscaling': whole-word BM25 tokens differ, sub-word sparse tokens overlap.",
+      "relevant_ids": [
+        "sp-008"
+      ],
+      "relevance_scores": {
+        "sp-008": 2.0
+      },
+      "negative_ids": [
+        "sp-024",
+        "sp-007",
+        "sp-026",
+        "sp-027",
+        "sp-012"
+      ]
+    },
+    {
+      "id": "s7",
+      "text": "LightGBM second phase",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Rare model name among near-duplicate documents: a lexical match decides, dense similarity may blur them.",
+      "relevant_ids": [
+        "sp-014"
+      ],
+      "relevance_scores": {
+        "sp-014": 2.0
+      },
+      "negative_ids": [
+        "sp-023",
+        "sp-026",
+        "sp-019",
+        "sp-028",
+        "sp-027"
+      ]
+    },
+    {
+      "id": "s8",
+      "text": "XGBoost model ranking",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Rare model name among near-duplicate documents: a lexical match decides, dense similarity may blur them.",
+      "relevant_ids": [
+        "sp-013"
+      ],
+      "relevance_scores": {
+        "sp-013": 2.0
+      },
+      "negative_ids": [
+        "sp-010",
+        "sp-006",
+        "sp-007",
+        "sp-027",
+        "sp-004"
+      ]
+    },
+    {
+      "id": "s9",
+      "text": "make results come back sooner",
+      "type": "dense",
+      "favours": "dense",
+      "why": "No shared vocabulary with the relevant document; only semantics link them.",
+      "relevant_ids": [
+        "sp-016"
+      ],
+      "relevance_scores": {
+        "sp-016": 2.0
+      },
+      "negative_ids": [
+        "sp-009",
+        "sp-007",
+        "sp-011",
+        "sp-025",
+        "sp-008"
+      ]
+    },
+    {
+      "id": "s10",
+      "text": "what if people mistype their search",
+      "type": "dense",
+      "favours": "dense",
+      "why": "Paraphrase of 'misspell words'; lexical signals miss it.",
+      "relevant_ids": [
+        "sp-019"
+      ],
+      "relevance_scores": {
+        "sp-019": 2.0
+      },
+      "negative_ids": [
+        "sp-014",
+        "sp-018",
+        "sp-020",
+        "sp-002",
+        "sp-007"
+      ]
+    },
+    {
+      "id": "s11",
+      "text": "new content searchable right away",
+      "type": "dense",
+      "favours": "dense",
+      "why": "Paraphrase of 'fresh as content changes'.",
+      "relevant_ids": [
+        "sp-018"
+      ],
+      "relevance_scores": {
+        "sp-018": 2.0
+      },
+      "negative_ids": [
+        "sp-011",
+        "sp-007",
+        "sp-003",
+        "sp-006",
+        "sp-016"
+      ]
+    },
+    {
+      "id": "s12",
+      "text": "partielle Updates ohne Neuindexierung",
+      "type": "dense",
+      "favours": "dense",
+      "why": "German query; relevant documents share few tokens, a multilingual embedding links them.",
+      "relevant_ids": [
+        "sp-025",
+        "sp-018"
+      ],
+      "relevance_scores": {
+        "sp-025": 2.0,
+        "sp-018": 1.0
+      },
+      "negative_ids": [
+        "sp-016",
+        "sp-013",
+        "sp-027",
+        "sp-006",
+        "sp-011"
+      ]
+    },
+    {
+      "id": "s13",
+      "text": "fix VESP-4022 by making feeding quicker",
+      "type": "hybrid",
+      "favours": "hybrid",
+      "why": "Needs the identifier (lexical) and the paraphrase 'feeding quicker' (semantic).",
+      "relevant_ids": [
+        "sp-002",
+        "sp-005",
+        "sp-016"
+      ],
+      "relevance_scores": {
+        "sp-002": 2.0,
+        "sp-005": 1.0,
+        "sp-016": 0.5
+      },
+      "negative_ids": [
+        "sp-021",
+        "sp-025",
+        "sp-028",
+        "sp-012",
+        "sp-011"
+      ]
+    },
+    {
+      "id": "s14",
+      "text": "how to combine keyword match and meaning based search",
+      "type": "hybrid",
+      "favours": "hybrid",
+      "why": "Both relevant documents mix lexical and semantic vocabulary; combined signals rank them first.",
+      "relevant_ids": [
+        "sp-020",
+        "sp-027"
+      ],
+      "relevance_scores": {
+        "sp-020": 2.0,
+        "sp-027": 2.0
+      },
+      "negative_ids": [
+        "sp-024",
+        "sp-015",
+        "sp-026",
+        "sp-003",
+        "sp-006"
+      ]
+    },
+    {
+      "id": "s15",
+      "text": "which words in the query matter most for BGE-M3 sparse scoring",
+      "type": "sparse",
+      "favours": "sparse",
+      "why": "Long verbose query: learned term weights emphasise BGE-M3 and sparse; dense is diluted by filler words.",
+      "relevant_ids": [
+        "sp-021",
+        "sp-022",
+        "sp-023"
+      ],
+      "relevance_scores": {
+        "sp-021": 2.0,
+        "sp-022": 1.0,
+        "sp-023": 1.0
+      },
+      "negative_ids": [
+        "sp-024",
+        "sp-011",
+        "sp-006",
+        "sp-002",
+        "sp-020"
+      ]
+    },
+    {
+      "id": "s16",
+      "text": "8.327.8",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Version number: only an exact token match separates eight near-identical release notes.",
+      "relevant_ids": [
+        "sp-032"
+      ],
+      "relevance_scores": {
+        "sp-032": 2.0
+      },
+      "negative_ids": [
+        "sp-016",
+        "sp-030",
+        "sp-005",
+        "sp-012",
+        "sp-002"
+      ]
+    },
+    {
+      "id": "s17",
+      "text": "what shipped in 8.352.3",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Version number inside a question.",
+      "relevant_ids": [
+        "sp-035"
+      ],
+      "relevance_scores": {
+        "sp-035": 2.0
+      },
+      "negative_ids": [
+        "sp-038",
+        "sp-021",
+        "sp-015",
+        "sp-032",
+        "sp-011"
+      ]
+    },
+    {
+      "id": "s18",
+      "text": "VSP-90427",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Ticket id: dense vectors of the release notes are almost identical.",
+      "relevant_ids": [
+        "sp-030"
+      ],
+      "relevance_scores": {
+        "sp-030": 2.0
+      },
+      "negative_ids": [
+        "sp-011",
+        "sp-013",
+        "sp-024",
+        "sp-037",
+        "sp-023"
+      ]
+    },
+    {
+      "id": "s19",
+      "text": "CatBoost second phase",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Rare model name among near-duplicate documents: a lexical match decides, dense similarity may blur them.",
+      "relevant_ids": [
+        "sp-037"
+      ],
+      "relevance_scores": {
+        "sp-037": 2.0
+      },
+      "negative_ids": [
+        "sp-006",
+        "sp-010",
+        "sp-007",
+        "sp-041",
+        "sp-016"
+      ]
+    },
+    {
+      "id": "s20",
+      "text": "Keras ranking model",
+      "type": "keyword",
+      "favours": "keyword",
+      "why": "Rare model name among near-duplicate documents: a lexical match decides, dense similarity may blur them.",
+      "relevant_ids": [
+        "sp-041"
+      ],
+      "relevance_scores": {
+        "sp-041": 2.0
+      },
+      "negative_ids": [
+        "sp-027",
+        "sp-038",
+        "sp-009",
+        "sp-007",
+        "sp-019"
+      ]
+    },
+    {
+      "id": "s21",
+      "text": "bgem3 lexicalweights",
+      "type": "sparse",
+      "favours": "sparse",
+      "why": "Run-together spelling of 'BGE-M3 ... lexical weights': whole-word BM25 finds nothing, sub-word sparse tokens match.",
+      "relevant_ids": [
+        "sp-021"
+      ],
+      "relevance_scores": {
+        "sp-021": 2.0
+      },
+      "negative_ids": [
+        "sp-035",
+        "sp-024",
+        "sp-018",
+        "sp-022",
+        "sp-011"
+      ]
+    },
+    {
+      "id": "s22",
+      "text": "hnswgraph",
+      "type": "sparse",
+      "favours": "sparse",
+      "why": "Merged spelling of 'HNSW graphs': BM25 has no whole-word match; sub-word tokens overlap.",
+      "relevant_ids": [
+        "sp-010"
+      ],
+      "relevance_scores": {
+        "sp-010": 2.0
+      },
+      "negative_ids": [
+        "sp-035",
+        "sp-026",
+        "sp-033",
+        "sp-040",
+        "sp-022"
+      ]
+    }
+  ]
+}

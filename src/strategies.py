@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 @dataclass(frozen=True)
@@ -12,6 +12,12 @@ class QueryConfig:
     query_vector_param: Optional[str] = None
     bm25_fields: Optional[List[str]] = None
     target_hits: int = 10
+    # Retrieval operators combined with OR for type="composite": keyword | sparse | dense
+    retrieval: Optional[Tuple[str, ...]] = None
+    sparse_operator: str = "wand"  # wand | dotProduct
+    sparse_top_k: Optional[int] = None  # keep only the k heaviest query tokens
+    sparse_query_param: str = "input.query(qs)"
+    dense_field: str = "embedding"
 
 
 @dataclass(frozen=True)
@@ -21,6 +27,7 @@ class Strategy:
     requires_embedding: bool
     description: str
     query_config: QueryConfig
+    requires_sparse: bool = False
 
 
 STRATEGIES = [
@@ -259,6 +266,146 @@ STRATEGIES = [
             vector_field="embedding",
             query_vector_param="input.query(q)",
             target_hits=30,
+        ),
+    ),
+    Strategy(
+        id="sparse_wand",
+        rank_profile="sparse_dot",
+        requires_embedding=False,
+        requires_sparse=True,
+        description="BGE-M3 sparse query, WAND retrieval, sparse dot-product ranking.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('sparse',),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_wand_pruned",
+        rank_profile="sparse_dot",
+        requires_embedding=False,
+        requires_sparse=True,
+        description="Sparse query pruned to the 6 heaviest tokens before WAND.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('sparse',),
+            sparse_operator="wand",
+            sparse_top_k=6,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_dotproduct",
+        rank_profile="sparse_rawscore",
+        requires_embedding=False,
+        requires_sparse=True,
+        description="Exhaustive dotProduct operator over all query tokens, ranked by rawScore.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('sparse',),
+            sparse_operator="dotProduct",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_field_weighted",
+        rank_profile="sparse_field_weighted",
+        requires_embedding=False,
+        requires_sparse=True,
+        description="Sparse query with title sparse vector weighted 2x over the full-text sparse vector.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('sparse',),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_retrieve_dense_rank",
+        rank_profile="sparse_dense",
+        requires_embedding=True,
+        requires_sparse=True,
+        description="Sparse WAND retrieval, then dense + sparse scoring of the candidates.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('sparse',),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="dense_retrieve_sparse_rank",
+        rank_profile="dense_retrieve_sparse_rank",
+        requires_embedding=True,
+        requires_sparse=True,
+        description="ANN retrieval, then candidates re-scored by sparse dot-product.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('dense',),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_dense",
+        rank_profile="sparse_dense",
+        requires_embedding=True,
+        requires_sparse=True,
+        description="Union of sparse WAND and dense ANN retrieval, scored dense + 0.3 * sparse.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('sparse', 'dense'),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_keyword",
+        rank_profile="sparse_keyword",
+        requires_embedding=False,
+        requires_sparse=True,
+        description="Union of keyword and sparse retrieval, scored sparse + 0.1 * BM25.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('keyword', 'sparse'),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_dense_keyword",
+        rank_profile="sparse_dense_keyword",
+        requires_embedding=True,
+        requires_sparse=True,
+        description="Union of keyword, sparse and dense retrieval with a linear score mix.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('keyword', 'sparse', 'dense'),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=10,
+        ),
+    ),
+    Strategy(
+        id="sparse_dense_keyword_rerank",
+        rank_profile="sparse_dense_keyword_rerank",
+        requires_embedding=True,
+        requires_sparse=True,
+        description="Cheap dense+sparse first phase, BM25 and field-match added in a second-phase rerank.",
+        query_config=QueryConfig(
+            type="composite",
+            retrieval=('keyword', 'sparse', 'dense'),
+            sparse_operator="wand",
+            sparse_top_k=None,
+            target_hits=20,
         ),
     ),
 ]

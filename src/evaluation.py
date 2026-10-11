@@ -3,6 +3,7 @@ import math
 from typing import Dict, List, Optional
 from vespa.application import Vespa
 
+from constants import SPARSE_SCALE
 from report import pretty_print_query, pretty_print_response
 from strategies import Strategy
 from text_utils import normalize_text
@@ -131,8 +132,29 @@ class QueryExecutor:
     def __init__(self, app: Vespa, target_hits: int = 10):
         self.app = app
         self.target_hits = target_hits
+        self.last_yql = None
+        self.last_sparse_query = None
 
-    def _build_query(self, strategy: Strategy, normalized_query: str, body: Dict) -> tuple[str, Dict]:
+    @staticmethod
+    def sparse_to_tensor(sparse: Dict[str, float]) -> Dict:
+        return {"cells": dict(sparse)}
+
+    @staticmethod
+    def _sparse_predicate(sparse: Dict[str, float], operator: str, target_hits: int) -> Optional[str]:
+        if not sparse:
+            return None
+        weights = ", ".join(f'"{token}": {max(1, int(round(weight * SPARSE_SCALE)))}' for token, weight in sparse.items())
+        if operator == "dotProduct":
+            return f"dotProduct(sparse_tokens, {{{weights}}})"
+        return f'([{{"targetHits": {target_hits}}}]wand(sparse_tokens, {{{weights}}}))'
+
+    def _build_query(
+        self,
+        strategy: Strategy,
+        normalized_query: str,
+        body: Dict,
+        sparse: Optional[Dict[str, float]] = None,
+    ) -> tuple[str, Dict]:
         query_config = strategy.query_config
         query_type = query_config.type
 
@@ -140,7 +162,22 @@ class QueryExecutor:
             if body.get("input.query(q)") is None:
                 raise RuntimeError("Embedding model is required for this strategy.")
 
-        if query_type == "bm25":
+        if query_type == "composite":
+            target_hits = query_config.target_hits or self.target_hits
+            predicates = []
+            for operator in query_config.retrieval or ():
+                if operator == "keyword":
+                    predicates.append("userQuery()")
+                elif operator == "dense":
+                    predicates.append(
+                        f'([{{"targetHits": {target_hits}}}]nearestNeighbor({query_config.dense_field}, q))'
+                    )
+                elif operator == "sparse":
+                    predicate = self._sparse_predicate(sparse or {}, query_config.sparse_operator, target_hits)
+                    if predicate:
+                        predicates.append(predicate)
+            yql = f"select * from doc where {' or '.join(predicates) if predicates else 'userQuery()'}"
+        elif query_type == "bm25":
             yql = "select * from doc where userQuery()"
         elif query_type in {"vector", "multi_vector"}:
             ann_fields = query_config.vector_fields or [query_config.vector_field]
@@ -163,16 +200,16 @@ class QueryExecutor:
 
         return yql, body
 
-    def run_query(
+    def search(
         self,
         strategy: Strategy,
         query_text: str,
         embedder: Optional[object] = None,
-    ) -> List[str]:
+    ):
+        """Run one query and return the raw Vespa response (hits keep match-features)."""
         normalized_query = normalize_text(query_text)
         body = {}
         query_config = strategy.query_config
-        query_type = query_config.type
 
         if strategy.requires_embedding:
             if embedder is None:
@@ -180,8 +217,18 @@ class QueryExecutor:
             query_vector = embedder.encode([normalized_query])[0]
             body[query_config.query_vector_param or "input.query(q)"] = query_vector
 
+        sparse = None
+        if strategy.requires_sparse:
+            if embedder is None or not getattr(embedder, "supports_sparse", False):
+                raise RuntimeError("An embedder with sparse vector support (BGE-M3) is required for this strategy.")
+            sparse = embedder.encode_sparse([normalized_query])[0]
+            if query_config.sparse_top_k:
+                heaviest = sorted(sparse.items(), key=lambda item: item[1], reverse=True)[: query_config.sparse_top_k]
+                sparse = dict(heaviest)
+            body[query_config.sparse_query_param] = self.sparse_to_tensor(sparse)
+
         target_hits = query_config.target_hits or self.target_hits
-        yql, body = self._build_query(strategy, normalized_query, body)
+        yql, body = self._build_query(strategy, normalized_query, body, sparse)
 
         logger.info(
             "Strategy: %s\n%s",
@@ -196,6 +243,18 @@ class QueryExecutor:
             hits=target_hits,
             body=body,
         )
+        self.last_yql = yql
+        self.last_sparse_query = sparse
+        return response
+
+    def run_query(
+        self,
+        strategy: Strategy,
+        query_text: str,
+        embedder: Optional[object] = None,
+    ) -> List[str]:
+        query_config = strategy.query_config
+        response = self.search(strategy, query_text, embedder)
 
         hits_list = getattr(response, "hits", []) or []
         result_ids = []

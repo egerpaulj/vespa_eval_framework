@@ -99,6 +99,20 @@ The framework evaluates a broad set of retrieval strategies, including:
 
 These strategies are defined in `src/strategies.py` and are executed by the benchmark runner.
 
+Additional sparse vectors can be used:
+
+### How does sparse differ from a dense embedding?
+
+| Property | `lexical_weights` | `dense_vecs` |
+|---|---|---|
+| Representation | Dictionary of token IDs and weights | Fixed-length numerical vector |
+| Dimensions | Variable number of nonzero entries | Fixed dimensionality |
+| Main signal | Weighted lexical overlap | Semantic relationships |
+| Similarity | Sparse dot product | Usually cosine similarity or dot product |
+| Interpretability | Token-level weights are inspectable | Individual dimensions usually lack direct meaning |
+
+> **In short:** `lexical_weights` tells you which token IDs the model emphasizes and by how much. It provides a learned sparse representation that is particularly useful for keyword-sensitive retrieval.
+
 ## Generated report
 
 After a run, the framework writes a Markdown report named `vespa_benchmark_results.md`.

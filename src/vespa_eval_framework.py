@@ -39,7 +39,7 @@ def main() -> None:
     app = create_vespa_application()
     logger.info("Connected to Vespa application")
 
-    embedder = create_embedder() if any(strategy.requires_embedding for strategy in STRATEGIES) else None
+    embedder = create_embedder() if any(strategy.requires_embedding or strategy.requires_sparse for strategy in STRATEGIES) else None
     if embedder is not None:
         logger.info("Initialized embedder")
     else:

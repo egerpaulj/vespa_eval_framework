@@ -1,6 +1,6 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Dict, List
 
 from constants import DEFAULT_EMBEDDING_MODEL
 
@@ -23,6 +23,11 @@ class Embedder(ABC):
     def encode(self, texts: List[str]) -> List[List[float]]:
         raise NotImplementedError
 
+    supports_sparse = False
+
+    def encode_sparse(self, texts: List[str]) -> List[Dict[str, float]]:
+        raise NotImplementedError("This embedder does not provide sparse vectors.")
+
     def encode_triplet(self, title: str, body: str) -> List[List[float]]:
         return self.encode([f"{title} {body}", title, body])
 
@@ -31,6 +36,18 @@ class BGEM3Embedder(Embedder):
     def __init__(self, model_name: str = "BAAI/bge-m3"):
         self.model = BGEM3FlagModel(model_name)
         self.provider = "flag"
+
+    supports_sparse = True
+
+    def encode_sparse(self, texts: List[str]) -> List[Dict[str, float]]:
+        """BGE-M3 lexical weights as {token_id: weight}, one dict per text."""
+        weights = self.model.encode(
+            texts,
+            return_dense=False,
+            return_sparse=True,
+            return_colbert_vecs=False,
+        )["lexical_weights"]
+        return [{str(token): float(weight) for token, weight in item.items()} for item in weights]
 
     def encode(self, texts: List[str]) -> List[List[float]]:
         vector_data = self.model.encode(

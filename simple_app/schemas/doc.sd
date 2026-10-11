@@ -79,6 +79,19 @@ schema doc {
                 }
             }
         }
+
+        field sparse_embedding type tensor<float>(t{}) {
+            indexing: attribute | summary
+        }
+
+        field title_sparse type tensor<float>(t{}) {
+            indexing: attribute | summary
+        }
+
+        field sparse_tokens type weightedset<string> {
+            indexing: attribute | summary
+            attribute: fast-search
+        }
     }
 
     fieldset default {
@@ -216,6 +229,206 @@ schema doc {
 
         first-phase {
             expression: bm25(title) + bm25(body) + 0.5 * closeness(field, title_embedding) + 0.5 * closeness(field, body_embedding)
+        }
+    }
+
+    rank-profile sparse_dot {
+        inputs {
+            query(qs) tensor<float>(t{})
+        }
+
+        first-phase {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        match-features {
+            sparse_score
+        }
+    }
+
+    rank-profile dense_retrieve_sparse_rank {
+        inputs {
+            query(q) tensor<float>(d[1024])
+            query(qs) tensor<float>(t{})
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        first-phase {
+            expression: sparse_score
+        }
+
+        match-features {
+            sparse_score
+            closeness(field, embedding)
+        }
+    }
+
+    rank-profile sparse_rawscore {
+        first-phase {
+            expression: rawScore(sparse_tokens)
+        }
+
+        function sparse_raw() {
+            expression: rawScore(sparse_tokens)
+        }
+
+        match-features {
+            sparse_raw
+        }
+    }
+
+    rank-profile sparse_field_weighted {
+        inputs {
+            query(qs) tensor<float>(t{})
+        }
+
+        first-phase {
+            expression: 2.0 * sum(query(qs) * attribute(title_sparse)) + sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        function title_sparse_score() {
+            expression: sum(query(qs) * attribute(title_sparse))
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        match-features {
+            title_sparse_score
+            sparse_score
+        }
+    }
+
+    rank-profile sparse_dense {
+        inputs {
+            query(q) tensor<float>(d[1024])
+            query(qs) tensor<float>(t{})
+        }
+
+        first-phase {
+            expression: sum(query(q) * attribute(embedding)) + 0.3 * sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        function dense_score() {
+            expression: sum(query(q) * attribute(embedding))
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        match-features {
+            dense_score
+            sparse_score
+        }
+    }
+
+    rank-profile sparse_keyword {
+        inputs {
+            query(qs) tensor<float>(t{})
+        }
+
+        first-phase {
+            expression: sum(query(qs) * attribute(sparse_embedding)) + 0.1 * (bm25(title) + bm25(body))
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        function bm25_title() {
+            expression: bm25(title)
+        }
+
+        function bm25_body() {
+            expression: bm25(body)
+        }
+
+        match-features {
+            sparse_score
+            bm25_title
+            bm25_body
+        }
+    }
+
+    rank-profile sparse_dense_keyword {
+        inputs {
+            query(q) tensor<float>(d[1024])
+            query(qs) tensor<float>(t{})
+        }
+
+        first-phase {
+            expression: sum(query(q) * attribute(embedding)) + 0.3 * sum(query(qs) * attribute(sparse_embedding)) + 0.1 * (bm25(title) + bm25(body))
+        }
+
+        function dense_score() {
+            expression: sum(query(q) * attribute(embedding))
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        function bm25_title() {
+            expression: bm25(title)
+        }
+
+        function bm25_body() {
+            expression: bm25(body)
+        }
+
+        match-features {
+            dense_score
+            sparse_score
+            bm25_title
+            bm25_body
+        }
+    }
+
+    rank-profile sparse_dense_keyword_rerank {
+        inputs {
+            query(q) tensor<float>(d[1024])
+            query(qs) tensor<float>(t{})
+        }
+
+        first-phase {
+            expression: sum(query(q) * attribute(embedding)) + 0.3 * sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        second-phase {
+            rerank-count: 100
+            expression: sum(query(q) * attribute(embedding)) + 0.3 * sum(query(qs) * attribute(sparse_embedding)) + 0.1 * (2.0 * bm25(title) + bm25(body)) + 0.5 * fieldMatch(title)
+        }
+
+        function dense_score() {
+            expression: sum(query(q) * attribute(embedding))
+        }
+
+        function sparse_score() {
+            expression: sum(query(qs) * attribute(sparse_embedding))
+        }
+
+        function bm25_title() {
+            expression: bm25(title)
+        }
+
+        function bm25_body() {
+            expression: bm25(body)
+        }
+
+        match-features {
+            dense_score
+            sparse_score
+            bm25_title
+            bm25_body
         }
     }
 }

@@ -5,3 +5,4 @@ pyvespa
 FlagEmbedding
 flair
 sentence-transformers
+pandas
